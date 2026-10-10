@@ -19,6 +19,7 @@
     "src/**/*.ts",
     "pruebas/**/*.mts",
     "validacion/**/*.mts",
-    "ejemplo.mts"
+    "ejemplo.mts",
+    "ejemplos/**/*.mts"
   ]
 }

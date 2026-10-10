@@ -63,6 +63,29 @@ console.log(resultado?.heterogeneidad); // Q, I², τ², ...
 Para usar el motor en tu propio proyecto TypeScript, copia la carpeta `src/` e impórtala como en el ejemplo (respetando la licencia AGPL-3.0).
 La entrada es el registro de estudio de aNova (campos numéricos como texto, tal como salen de un formulario).
 
+## Ejemplo con datos reales y comparación con R
+
+`ejemplos/ejemplo-bcg.mts` analiza un meta-análisis real de 13 ensayos de la vacuna BCG contra la tuberculosis (datos `dat.bcg` del paquete `metadat`
+de R; Colditz et al., 1994) a partir de un CSV con las tablas 2×2 (`ejemplos/bcg.csv`):
+
+```bash
+npm run ejemplo:bcg                  # OR combinado ≈ 0,4746, IC 95 % [0,3296; 0,6835], τ² ≈ 0,3378
+Rscript ejemplos/comparar-bcg.R      # opcional, si tienes R con metafor y metadat: debe dar los mismos números
+```
+
+Para analizar **tus propios datos**, copia `ejemplo-bcg.mts` y cambia el CSV: cada fila es un estudio con eventos y no-eventos de tratados y controles.
+
+## Diferencias de convención con R (documentadas, no son errores)
+
+Si comparas con R y ves una diferencia, probablemente sea una de estas (detalle y comprobaciones en `docs/VALIDACION.md`):
+
+- **I².** Este motor muestra el I² clásico de Higgins, (Q − gl)/Q. `metafor` muestra otro basado en τ², τ²/(τ² + s²); coinciden solo si τ² se estima por DerSimonian-Laird. Para BCG: 92,6 % frente a 92,1 %.
+- **Intervalo de predicción.** Aquí se usa t con k − 2 grados de libertad (IntHout et al. 2014; en `meta`, `method.predict = "HTS"`). `predict()` de `metafor` usa por defecto la normal y `meta` ≥ 8 usa t con k − 1; con pocos estudios los intervalos salen distintos (BCG: [0,124; 1,818] aquí, [0,126; 1,794] con el valor por defecto de `meta`).
+- **Mantel-Haenszel, diferencia de riesgos.** Se sigue a RevMan 5 y al Cochrane Handbook; `rma.mh` usa otra varianza.
+- **Razón de medias.** `escalc("ROM")` añade una corrección de sesgo de primer orden; aquí se usa la fórmula del Handbook.
+- **Q de `madauni`.** Usa pesos de efectos aleatorios; aquí se usa la Q de Cochran con pesos de efectos fijos (igual que `metafor` y `meta`).
+- **Celdas en cero en la red de OR.** Se sigue la regla de `meta::pairwise` y `netmeta`; los estudios sin ningún contraste informativo se descartan y se declaran.
+
 ## Validación
 
 Los valores de R están guardados en `validacion/referencias/*.json` y se regeneran con los scripts `validacion/generar-referencia*.R`

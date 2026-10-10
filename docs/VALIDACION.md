@@ -419,6 +419,10 @@ aNova coincide con la fuente que dice seguir):
   fórmulas literales de RevMan 5 (transcritas en R, no con salida de un paquete) y mide la distancia a `metafor`: el error
   estándar se aparta hasta ≈2 % y el Q difiere en 14 de 70 conjuntos. La estimación puntual coincide con las dos.
   RevMan Web (la versión actual) no ofrece Mantel-Haenszel, así que la referencia de Cochrane sigue siendo RevMan 5.
+- **Intervalo de predicción.** aNova usa t con k − 2 gl (IntHout et al. 2014; Higgins, Thompson y Spiegelhalter 2009). La validación fija
+  `method.predict = "HTS"` en `meta::metagen`, que da exactamente el mismo valor. El valor por defecto de `meta` ≥ 8 es t con k − 1 gl
+  (Veroniki et al. 2019) y el de `predict.rma` de `metafor` es la normal. Con los 13 ensayos BCG: aNova [0,1239; 1,8183], `meta`
+  por defecto [0,1256; 1,7939], `metafor::predict` [0,1435; 1,5696]. Comprobado el 10 oct 2026 al repetir la validación como lo haría un usuario externo.
 - **Trim-and-fill con REML.** `metafor::trimfill()` reajusta el modelo con la tolerancia por defecto de REML (1e-5), por lo
   que su efecto ajustado solo es fiable a ≈1e-6. Se reajusta en R con control estricto sobre los mismos datos aumentados y
   aNova coincide con ese valor.

@@ -149,7 +149,7 @@ export const formatoParaGuardar = (x: number): string => String(Number(x.toPreci
  *
  * @example
  * const resultado = efectoDesde2x2(10, 50, 5, 50, "OR");
- * // {estimacion: 2.33, icInferior: 0.74, icSuperior: 7.32, se: 0.63}
+ * // {valor: 2.25, icInferior: 0.709, icSuperior: 7.141, se: 0.589, correccion: false}   (coincide con metafor::escalc)
  */
 export function efectoDesde2x2(
   eventosTrat: number,
@@ -1050,7 +1050,7 @@ export function metaRegresionMulti(
  *
  * @example
  * const resultado = calcularMetaAnalisis(estudios, "OR", "REML");
- * console.log(resultado.aleatorio.estimacion, resultado.i2, resultado.tau2);
+ * console.log(resultado?.aleatorio.estimacion, resultado?.heterogeneidad.i2, resultado?.heterogeneidad.tau2);
  */
 export function calcularMetaAnalisis(
   estudios: Estudio[],
