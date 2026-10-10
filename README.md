@@ -24,23 +24,43 @@ con R (`metafor`, `meta`, `netmeta`, `mada`, `irr`, `clubSandwich`) usando R sol
 | `funciones-especiales.ts`, `numerica-compartida.ts` | Funciones especiales y numéricas propias |
 | `tipos.ts` | Tipos de datos (subconjunto del modelo de la aplicación) |
 
-## Uso
+## Cómo ejecutarlo (paso a paso, sin experiencia previa)
+
+1. **Instala Node.js 22 o superior** desde https://nodejs.org (es el programa que ejecuta el código; la versión «LTS» sirve).
+2. **Descarga el código.** En esta página de GitHub, botón verde **Code → Download ZIP**, y descomprímelo. (Si usas git: `git clone https://github.com/altfernovamd-eng/anova-motor.git`.)
+3. **Abre una terminal dentro de esa carpeta** (en Mac: Terminal; en Windows: PowerShell) y escribe estos comandos, uno por uno:
 
 ```bash
-npm install          # solo herramientas de desarrollo (tsx, typescript)
-npm test             # pruebas + validación contra los valores de R guardados
-npm run validacion:masiva   # comparación masiva (≈375.000 comprobaciones)
+npm install                 # descarga las herramientas de desarrollo (tsx, typescript); no hay librerías de ejecución
+npm test                    # pruebas del motor + comparación con los valores de R guardados (tarda un par de minutos)
+npm run ejemplo             # un meta-análisis pequeño de ejemplo (ver abajo)
+npm run validacion:masiva   # opcional: comparación masiva (≈375.000 comprobaciones)
 ```
+
+No hace falta tener R: los resultados de R ya están guardados en `validacion/referencias/`. R solo se necesita para volver a generarlos.
+
+## Ejemplo
+
+`ejemplo.mts` calcula el OR combinado de tres estudios (efectos aleatorios, estimador REML):
 
 ```ts
 import { calcularMetaAnalisis } from "./src/statistics.ts";
+import type { Estudio } from "./src/tipos.ts";
 
-const e = (id: number, valor: string, lo: string, hi: string) =>
-  ({ id, autor: `E${id}`, año: "2020", diseño: "ECA", n: "200", medida: "OR", valor, icInferior: lo, icSuperior: hi }) as const;
-const r = calcularMetaAnalisis([e(1, "0.80", "0.50", "1.20"), e(2, "0.65", "0.40", "1.05"), e(3, "0.90", "0.60", "1.35")] as never, "OR", "REML");
-console.log(r?.aleatorio.estimacion, r?.i2, r?.tau2);
+const estudio = (id: number, valor: string, icInferior: string, icSuperior: string): Estudio =>
+  ({ id, autor: `Estudio ${id}`, año: "2020", diseño: "ECA", n: "200", medida: "OR", valor, icInferior, icSuperior });
+
+const resultado = calcularMetaAnalisis(
+  [estudio(1, "0.80", "0.50", "1.20"), estudio(2, "0.65", "0.40", "1.05"), estudio(3, "0.90", "0.60", "1.35")],
+  "OR",
+  "REML",
+);
+console.log(resultado?.aleatorio);      // OR combinado y su IC 95 %
+console.log(resultado?.heterogeneidad); // Q, I², τ², ...
 ```
 
+`npm run ejemplo` muestra el efecto combinado con su intervalo de confianza (`aleatorio`) y las medidas de heterogeneidad (`heterogeneidad`: Q, I², τ²).
+Para usar el motor en tu propio proyecto TypeScript, copia la carpeta `src/` e impórtala como en el ejemplo (respetando la licencia AGPL-3.0).
 La entrada es el registro de estudio de aNova (campos numéricos como texto, tal como salen de un formulario).
 
 ## Validación

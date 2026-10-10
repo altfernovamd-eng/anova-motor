@@ -18,6 +18,7 @@
   "include": [
     "src/**/*.ts",
     "pruebas/**/*.mts",
-    "validacion/**/*.mts"
+    "validacion/**/*.mts",
+    "ejemplo.mts"
   ]
 }

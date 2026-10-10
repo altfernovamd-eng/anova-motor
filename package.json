@@ -15,6 +15,7 @@
     "benchmark": "npx tsx pruebas/benchmark-meta.mts && npx tsx pruebas/benchmark-kappa.mts && npx tsx pruebas/benchmark-sroc.mts && npx tsx pruebas/benchmark-red.mts",
     "validacion": "npx tsx validacion/comparar.mts",
     "validacion:masiva": "VALIDACION_AVANZADA=masiva npx tsx validacion/comparar.mts",
+    "ejemplo": "tsx ejemplo.mts",
     "tipos": "tsc --noEmit"
   },
   "devDependencies": {
