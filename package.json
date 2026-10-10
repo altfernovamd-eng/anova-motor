@@ -1,0 +1,25 @@
+{
+  "name": "anova-motor",
+  "version": "0.1.0",
+  "description": "Motor estadístico de meta-análisis de aNova: efectos fijos y aleatorios, meta-regresión, sesgo de publicación, red, DTA bivariado, multinivel, GLMM y concordancia. Validado contra R.",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "author": "Fernando Ramírez Nova",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "npm run pruebas && npm run validacion",
+    "pruebas": "npx tsx pruebas/test-funciones-especiales.mts && npx tsx pruebas/test-moses-littenberg.mts && npx tsx pruebas/test-kappa-r.mts && npx tsx pruebas/test-multinivel.mts && npx tsx pruebas/test-sroc-bivariado.mts && npx tsx pruebas/test-regresion-r.mts && npx tsx pruebas/test-cluster-cruzado.mts && npx tsx pruebas/test-red.mts && npx tsx pruebas/test-glmm.mts && npx tsx pruebas/test-conversiones.mts",
+    "benchmark": "npx tsx pruebas/benchmark-meta.mts && npx tsx pruebas/benchmark-kappa.mts && npx tsx pruebas/benchmark-sroc.mts && npx tsx pruebas/benchmark-red.mts",
+    "validacion": "npx tsx validacion/comparar.mts",
+    "validacion:masiva": "VALIDACION_AVANZADA=masiva npx tsx validacion/comparar.mts",
+    "tipos": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}

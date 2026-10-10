@@ -1,0 +1,14 @@
+# Generado por scripts/exportar-motor.mts desde docs/autoria.json. Los valores PENDIENTE hay que completarlos antes de publicar.
+cff-version: 1.2.0
+message: "Si usa este software, cítelo con estos datos."
+title: "aNova motor estadístico de meta-análisis"
+version: "0.1.0"
+type: software
+license: AGPL-3.0-only
+authors:
+  - family-names: "Ramírez Nova"
+    given-names: "Fernando"
+    orcid: "https://orcid.org/0000-0001-6252-2769"
+    email: "altfernovamd@gmail.com"
+repository-code: "https://github.com/altfernovamd-eng/anova-motor"
+date-released: "2026-10-10"
