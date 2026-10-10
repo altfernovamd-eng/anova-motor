@@ -24,6 +24,8 @@ con R (`metafor`, `meta`, `netmeta`, `mada`, `irr`, `clubSandwich`) usando R sol
 | `funciones-especiales.ts`, `numerica-compartida.ts` | Funciones especiales y numéricas propias |
 | `tipos.ts` | Tipos de datos (subconjunto del modelo de la aplicación) |
 
+**Referencia completa de todas las funciones** (firma y descripción de cada una): [`docs/API.md`](docs/API.md), generada desde el código.
+
 ## Cómo ejecutarlo (paso a paso, sin experiencia previa)
 
 1. **Instala Node.js 22 o superior** desde https://nodejs.org (es el programa que ejecuta el código; la versión «LTS» sirve).
