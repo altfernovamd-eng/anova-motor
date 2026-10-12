@@ -42,7 +42,7 @@ export interface PuntoDiagnostico {
   s: number;
 }
 
-/** `null` si los conteos no son válidos (negativos, no finitos, o sin enfermos o sin sanos). */
+/** Tabla de un estudio diagnóstico (VP, FP, FN, VN) → ln DOR con su error estándar y S = logit(sensibilidad) + logit(FPR), las dos variables de la regresión de Moses-Littenberg; suma 0,5 a las cuatro celdas si alguna es cero. `null` si los conteos no son válidos (negativos, no finitos, o sin enfermos o sin sanos). */
 export function puntoDiagnostico(vp: number, fp: number, fn: number, vn: number): PuntoDiagnostico | null {
   if (![vp, fp, fn, vn].every((x) => Number.isFinite(x) && x >= 0)) return null;
   if (vp + fn <= 0 || fp + vn <= 0) return null;

@@ -168,7 +168,7 @@ p de la cola superior de χ² con `gl` grados de libertad.
 export function studentTQuantile975(gl: number): number
 ```
 
-97.5th percentile of Student's t with `gl` degrees of freedom (two-tailed 95%), found by bisection.
+Percentil 97,5 de la t de Student con `gl` grados de libertad (cuantil bilateral del 95 %), por bisección.
 
 ### `transformar`
 
@@ -176,7 +176,7 @@ export function studentTQuantile975(gl: number): number
 export function transformar(valor: number, escala: EscalaAnalisis): number
 ```
 
-*(sin descripción en el código)*
+Lleva un valor a la escala de análisis: log (OR, RR, HR), logit (proporciones), z de Fisher (correlaciones) o el mismo valor (escala lineal).
 
 ### `destransformar`
 
@@ -184,7 +184,7 @@ export function transformar(valor: number, escala: EscalaAnalisis): number
 export function destransformar(valor: number, escala: EscalaAnalisis): number
 ```
 
-*(sin descripción en el código)*
+Inversa de `transformar`: devuelve un valor de la escala de análisis a su escala natural.
 
 ### `efectoDesde2x2`
 
@@ -344,7 +344,7 @@ export function metaAnalisisAcumulativo(estudios: Estudio[], medida: Medida, mod
 export function analisisSensibilidad(estudios: Estudio[], medida: Medida, modelo: "fijo" | "aleatorio", metodoTau2: MetodoTau2 = "DL"): FilaSensibilidad[] | null
 ```
 
-Leave-one-out sensitivity analysis: re-pools the meta-analysis omitting each study in turn, so the reviewer can see whether any single study is driving the overall result. Needs ≥3 valid studies (so ≥2 remain after removing one). Reuses the same verified engine and the chosen fixed/random model.
+Análisis de sensibilidad «dejar uno fuera»: repite el meta-análisis omitiendo cada estudio por turno, para ver si un solo estudio determina el resultado global. Requiere ≥ 3 estudios válidos (así quedan ≥ 2 al quitar uno). Usa el mismo motor y el modelo fijo o aleatorio elegido.
 
 ### `testEgger`
 
@@ -448,7 +448,7 @@ Convierte un efecto relativo (OR o RR) en efecto absoluto — lo que GRADE llama
 export function valorNulo(escala: EscalaAnalisis): number | null
 ```
 
-Reference (null-effect) value for a scale, or null when the scale has no meaningful null (e.g. proportions).
+Valor nulo (sin efecto) de una escala: 1 para la escala log (OR, RR, HR), 0 para la lineal y la z de Fisher; `null` si la escala no tiene un nulo con sentido (p. ej. proporciones).
 
 ### `esSignificativo`
 
@@ -456,7 +456,7 @@ Reference (null-effect) value for a scale, or null when the scale has no meaning
 export function esSignificativo(icInferior: number, icSuperior: number, nulo: number | null): boolean
 ```
 
-Whether a confidence interval excludes the null value (i.e. the pooled effect is statistically significant).
+¿El intervalo de confianza excluye el valor nulo? (es decir, ¿el efecto combinado es estadísticamente significativo?).
 
 ### `validarEfectoIC`
 
@@ -464,7 +464,7 @@ Whether a confidence interval excludes the null value (i.e. the pooled effect is
 export function validarEfectoIC(estudio: Pick<Estudio, "medida" | "valor" | "icInferior" | "icSuperior">): string | null
 ```
 
-Live per-row validation for the Extracción table. Returns null while the row is still untouched (no need to nag on a blank new row), or a specific error message otherwise.
+Validación en vivo de una fila de la tabla de extracción: devuelve `null` mientras la fila esté sin tocar (para no molestar en una fila nueva en blanco) y, si no, un mensaje de error específico.
 
 ### `calcularSROC`
 
@@ -490,7 +490,7 @@ Intervalo de Wilson de una proporción x/n (más estable que el de Wald cuando x
 export function puntoDiagnostico(vp: number, fp: number, fn: number, vn: number): PuntoDiagnostico | null
 ```
 
-`null` si los conteos no son válidos (negativos, no finitos, o sin enfermos o sin sanos).
+Tabla de un estudio diagnóstico (VP, FP, FN, VN) → ln DOR con su error estándar y S = logit(sensibilidad) + logit(FPR), las dos variables de la regresión de Moses-Littenberg; suma 0,5 a las cuatro celdas si alguna es cero. `null` si los conteos no son válidos (negativos, no finitos, o sin enfermos o sin sanos).
 
 ### `regresionMosesLittenberg`
 
@@ -606,7 +606,7 @@ Ajusta el modelo CHE por REML y calcula la inferencia robusta. `null` con menos 
 export function sensibilidadRho(datos: EfectoDependiente[], opc: OpcionesMultinivel = {}, rhos: readonly number[] = RHO_SENSIBILIDAD):
 ```
 
-*(sin descripción en el código)*
+Repite el ajuste multinivel con varias correlaciones supuestas entre efectos (por defecto 0; 0,2; 0,4; 0,6 y 0,8) para ver cuánto depende el resultado de esa suposición.
 
 ## `src/glmm.ts`
 
@@ -864,7 +864,7 @@ Cochrane Handbook cap. 19.5.2: un "0" reportado puede ser un evento realmente au
 export function faltaJustificarCero(crudos: DatosCrudos): boolean
 ```
 
-*(sin descripción en el código)*
+¿Hay un cero reportado (tabla 2×2 o proporción) sin justificación escrita? Handbook 19.5.2: un 0 puede ser ausencia real del evento o ausencia de reporte, y debe justificarse.
 
 ### `calcularEfectoCrudos`
 
@@ -872,7 +872,7 @@ export function faltaJustificarCero(crudos: DatosCrudos): boolean
 export function calcularEfectoCrudos(medida: Medida, crudos?: DatosCrudos, dividirControlEn?: number): EfectoCalculado | null
 ```
 
-Calcula la medida de efecto (OR, RR, RAR, PR, DM, DME, Proporción) a partir de datos crudos. en cuántas partes iguales se divide. En una tabla 2×2 se dividen los eventos Y el total del control; en medias solo el N (la media y la DE no cambian). Sin valor (o 1) no se divide.
+Calcula la medida de efecto (OR, RR, RAR, PR, DM, DME, Proporción) a partir de datos crudos.
 
 ### `compararVerificacion`
 

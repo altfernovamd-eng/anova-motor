@@ -32,6 +32,7 @@ export function tieneEventoCero(crudos: DatosCrudos): boolean {
   if (crudos.tipo === "proporcion") return num(crudos.eventos) === 0;
   return false;
 }
+/** ¿Hay un cero reportado (tabla 2×2 o proporción) sin justificación escrita? Handbook 19.5.2: un 0 puede ser ausencia real del evento o ausencia de reporte, y debe justificarse. */
 export function faltaJustificarCero(crudos: DatosCrudos): boolean {
   if (!tieneEventoCero(crudos)) return false;
   const justificacion = crudos.tipo === "2x2" || crudos.tipo === "proporcion" ? crudos.justificacionCero : undefined;

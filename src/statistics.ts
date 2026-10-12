@@ -36,7 +36,7 @@ export function chiSquarePValue(q: number, gl: number): number {
 /** P(|T| > t) para una t de Student con `gl` grados de libertad: la cola de AMBOS lados (ya es el p bilateral). */
 const studentTDosColas = tStudentDosColas;
 
-/** 97.5th percentile of Student's t with `gl` degrees of freedom (two-tailed 95%), found by bisection. */
+/** Percentil 97,5 de la t de Student con `gl` grados de libertad (cuantil bilateral del 95 %), por bisección. */
 export function studentTQuantile975(gl: number): number {
   if (gl <= 0) return NaN;
   let lo = 0;
@@ -92,6 +92,7 @@ export interface ResultadoMetaAnalisis {
   };
 }
 
+/** Lleva un valor a la escala de análisis: log (OR, RR, HR), logit (proporciones), z de Fisher (correlaciones) o el mismo valor (escala lineal). */
 export function transformar(valor: number, escala: EscalaAnalisis): number {
   if (escala === "log") return Math.log(valor);
   if (escala === "logit") return Math.log(valor / (1 - valor));
@@ -99,6 +100,7 @@ export function transformar(valor: number, escala: EscalaAnalisis): number {
   return valor;
 }
 
+/** Inversa de `transformar`: devuelve un valor de la escala de análisis a su escala natural. */
 export function destransformar(valor: number, escala: EscalaAnalisis): number {
   if (escala === "log") return Math.exp(valor);
   if (escala === "logit") {
@@ -1250,9 +1252,9 @@ export interface FilaSensibilidad {
 }
 
 /**
- * Leave-one-out sensitivity analysis: re-pools the meta-analysis omitting each study in turn, so the
- * reviewer can see whether any single study is driving the overall result. Needs ≥3 valid studies (so
- * ≥2 remain after removing one). Reuses the same verified engine and the chosen fixed/random model.
+ * Análisis de sensibilidad «dejar uno fuera»: repite el meta-análisis omitiendo cada estudio por turno, para ver si un solo
+ * estudio determina el resultado global. Requiere ≥ 3 estudios válidos (así quedan ≥ 2 al quitar uno). Usa el mismo motor
+ * y el modelo fijo o aleatorio elegido.
  */
 export function analisisSensibilidad(
   estudios: Estudio[],
@@ -2584,22 +2586,22 @@ export function calcularEfectoAbsoluto(
   };
 }
 
-/** Reference (null-effect) value for a scale, or null when the scale has no meaningful null (e.g. proportions). */
+/** Valor nulo (sin efecto) de una escala: 1 para la escala log (OR, RR, HR), 0 para la lineal y la z de Fisher; `null` si la escala no tiene un nulo con sentido (p. ej. proporciones). */
 export function valorNulo(escala: EscalaAnalisis): number | null {
   if (escala === "log") return 1;
   if (escala === "lineal" || escala === "fisher") return 0;
   return null; // logit / proportions have no null-effect line
 }
 
-/** Whether a confidence interval excludes the null value (i.e. the pooled effect is statistically significant). */
+/** ¿El intervalo de confianza excluye el valor nulo? (es decir, ¿el efecto combinado es estadísticamente significativo?). */
 export function esSignificativo(icInferior: number, icSuperior: number, nulo: number | null): boolean {
   if (nulo === null) return false;
   return nulo < icInferior || nulo > icSuperior;
 }
 
 /**
- * Live per-row validation for the Extracción table. Returns null while the row is still
- * untouched (no need to nag on a blank new row), or a specific error message otherwise.
+ * Validación en vivo de una fila de la tabla de extracción: devuelve `null` mientras la fila esté sin tocar (para no
+ * molestar en una fila nueva en blanco) y, si no, un mensaje de error específico.
  */
 export function validarEfectoIC(estudio: Pick<Estudio, "medida" | "valor" | "icInferior" | "icSuperior">): string | null {
   const medida = estudio.medida;

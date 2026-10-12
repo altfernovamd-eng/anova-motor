@@ -376,6 +376,7 @@ export function ajustarMultinivel(datos: EfectoDependiente[], opc: OpcionesMulti
 /** Sensibilidad a la correlación supuesta: el mismo ajuste con distintas ρ. */
 export const RHO_SENSIBILIDAD: readonly number[] = [0, 0.2, 0.4, 0.6, 0.8];
 
+/** Repite el ajuste multinivel con varias correlaciones supuestas entre efectos (por defecto 0; 0,2; 0,4; 0,6 y 0,8) para ver cuánto depende el resultado de esa suposición. */
 export function sensibilidadRho(datos: EfectoDependiente[], opc: OpcionesMultinivel = {}, rhos: readonly number[] = RHO_SENSIBILIDAD): { rho: number; resultado: ResultadoMultinivel | null }[] {
   return rhos.map((rho) => ({ rho, resultado: ajustarMultinivel(datos, { ...opc, rho }) }));
 }

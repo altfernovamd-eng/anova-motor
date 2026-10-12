@@ -24,6 +24,45 @@ con R (`metafor`, `meta`, `netmeta`, `mada`, `irr`, `clubSandwich`) usando R sol
 | `funciones-especiales.ts`, `numerica-compartida.ts` | Funciones especiales y numéricas propias |
 | `tipos.ts` | Tipos de datos (subconjunto del modelo de la aplicación) |
 
+## Guía por tareas: ¿qué función uso?
+
+| Quiero… | Función | Qué hace / nota |
+|---|---|---|
+| **Efecto de cada estudio** | | |
+| OR, RR o diferencia de riesgos desde una tabla 2×2 | `efectoDesde2x2` | Valor, IC 95 % y error estándar; suma 0,5 a las cuatro celdas si alguna es cero |
+| Diferencia de medias o g de Hedges desde medias, DE y n | `efectoDesdeMedias`, `efectoDesdeMediasEstandarizada` | Valor, IC 95 % y error estándar |
+| Proporción de un solo grupo (prevalencia) | `efectoDesdeProporcion` | En escala logit |
+| Razón o diferencia de tasas de incidencia | `efectoDesdeTasas` | Desde eventos y tiempo-persona |
+| Razón de medias; correlación (z de Fisher); HR desde O−E y V | `efectoDesdeRazonDeMedias`, `efectoDesdeCorrelacion`, `efectoDesdeOEV` |  |
+| Ensayos cruzados o por clústeres | `efectoDesdeCruzado`, `efectoDeDisenoCluster` | Evitan el error de unidad de análisis (Handbook cap. 23) |
+| Efecto desde los datos crudos tal como se capturan | `calcularEfectoCrudos` | Elige el cálculo según el tipo de dato (2×2, medias, proporción) |
+| **Combinar estudios** | | |
+| Meta-análisis de una medida: efectos fijos y aleatorios (DL, Paule-Mandel, REML), Hartung-Knapp, intervalo de predicción, Q, I², τ² | `calcularMetaAnalisis` | Devuelve `fijo`, `aleatorio` y `heterogeneidad`; `null` con menos de 2 estudios válidos |
+| Lo mismo para todas las medidas presentes en los estudios | `agruparPorMedida` |  |
+| Intervalos de confianza de τ², τ e I² | `confianzaHeterogeneidad` | Método Q-profile |
+| Mantel-Haenszel o Peto (datos binarios, eventos raros) | `metaAnalisisMH`, `metaAnalisisPeto` |  |
+| Modelos mixtos logísticos (OR con eventos raros; proporciones) | `ajustarGLMMOdds`, `ajustarGLMMProporcion` | Hipergeométrico-normal y binomial-normal |
+| Varios efectos por estudio (dependientes) | `ajustarMultinivel`, `sensibilidadRho` | Modelo multinivel con varianza robusta CR2; la ρ entre efectos es un supuesto, de ahí la sensibilidad |
+| Meta-regresión | `metaRegresionMulti`, `ajustarMetaRegresion` | Moderadores continuos y categóricos; τ² residual por REML |
+| Subgrupos y meta-análisis acumulativo | `analisisSubgrupos`, `metaAnalisisAcumulativo` |  |
+| **Explorar y comprobar** | | |
+| Qué estudios pesan o influyen más | `analisisSensibilidad`, `diagnosticosInfluencia`, `baujat`, `galbraith` | Dejar uno fuera, influencia, diagrama de Baujat y gráfico de Galbraith |
+| Sesgo de publicación | `testEgger`, `testBegg`, `testPeters`, `trimAndFill` | Pruebas de asimetría del embudo y trim-and-fill |
+| **Otros diseños** | | |
+| Precisión diagnóstica: SROC y modelo bivariado (Reitsma) | `calcularSROC`, `ajustarBivariado`, `curvaSROC`, `areaBajoCurva`, `regionesROC` | Sensibilidad y especificidad combinadas, DOR, curva, AUC y regiones de confianza y predicción |
+| Meta-análisis en red | `calcularNMA`, `calcularPScores`, `calcularNodeSplittingSIDDE` | Tabla de liga, ranking por P-score e inconsistencia (node-splitting) |
+| **Certeza y presentación** | | |
+| Certeza GRADE y efecto absoluto | `evaluarGrade`, `calcularEfectoAbsoluto` | Una sugerencia por reglas, no un sustituto del juicio del revisor |
+| **Datos que faltan: conversiones del Handbook (cap. 6 y 10.6)** | | |
+| DE desde EE, IC, t o P; combinar grupos; DE del cambio | `sdDesdeEE`, `sdDesdeICMedia`, `eeDiferenciaDesdeIC`, `eeDiferenciaDesdeT`, `eeDiferenciaDesdeP`, `combinarGrupos`, `sdCambioDesdeCorrelacion` | Todas devuelven `null` cuando los datos no alcanzan, en vez de inventar un número |
+| Media y DE desde mediana y cuartiles o rango | `mediaSdWan` | Wan et al. 2014 |
+| OR ↔ diferencia de medias estandarizada | `dmeDesdeOR`, `orDesdeDME` |  |
+| **Concordancia entre revisores** | | |
+| κ de Cohen (2 evaluadores) y de Fleiss (varios) | `cohenKappa`, `fleissKappa`, `interpretarKappa` | Interpretación de Landis y Koch |
+| **Funciones estadísticas de apoyo** | | |
+| p-valores y cuantiles (χ², t, normal) | `chiCuadradoCola`, `tStudentDosColas`, `normalDosColas`, `tStudentCuantilDosColas`, `normalCuantil` | Escritas desde las fórmulas; comprobadas contra R |
+| Funciones especiales y numéricas | `lnGamma`, `betaIncompleta`, `nodosGaussHermite`, `nelderMead`, `cholesky` | Base de los modelos anteriores |
+
 **Referencia completa de todas las funciones** (firma y descripción de cada una): [`docs/API.md`](docs/API.md), generada desde el código.
 
 ## Cómo ejecutarlo (paso a paso, sin experiencia previa)
